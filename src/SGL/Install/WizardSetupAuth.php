@@ -54,7 +54,7 @@ function authFileExists()
 /**
  * @package Install
  */
-class WizardSetupAuth extends HTML_QuickForm_Page
+class SGL_Install_WizardSetupAuth extends HTML_QuickForm_Page
 {
     function buildForm()
     {

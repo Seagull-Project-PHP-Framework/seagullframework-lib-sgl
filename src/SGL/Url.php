@@ -41,7 +41,6 @@
 //
 
 #needed for BC output url hander, esp: SGL_URL::makeLink()
-require_once SGL_CORE_DIR . '/UrlParser/SefStrategy.php';
 
 /**
  * Url related functionality.

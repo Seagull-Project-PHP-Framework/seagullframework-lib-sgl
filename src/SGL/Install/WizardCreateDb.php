@@ -122,7 +122,7 @@ function canCreateDb()
 /**
  * @package Install
  */
-class WizardCreateDb extends HTML_QuickForm_Page
+class SGL_Install_WizardCreateDb extends HTML_QuickForm_Page
 {
     function buildForm()
     {

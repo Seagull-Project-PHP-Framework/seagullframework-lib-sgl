@@ -49,7 +49,7 @@ function hasAgreed()
 /**
  * @package Install
  */
-class WizardLicenseAgreement extends HTML_QuickForm_Page
+class SGL_Install_WizardLicenseAgreement extends HTML_QuickForm_Page
 {
     function buildForm()
     {

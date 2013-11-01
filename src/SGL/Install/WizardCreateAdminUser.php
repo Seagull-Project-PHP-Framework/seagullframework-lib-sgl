@@ -58,7 +58,7 @@ function webRootExists()
 /**
  * @package Install
  */
-class WizardCreateAdminUser extends HTML_QuickForm_Page
+class SGL_Install_WizardCreateAdminUser extends HTML_QuickForm_Page
 {
     function buildForm()
     {
