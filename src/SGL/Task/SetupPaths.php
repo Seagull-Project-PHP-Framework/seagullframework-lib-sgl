@@ -34,14 +34,12 @@ class SGL_Task_SetupPaths extends SGL_Task
             } else {
                 define('SGL_PATH', $GLOBALS['rootDir']);
             }
+#FIXMESGL11
             define('SGL_LIB_PEAR_DIR', SGL_PATH . '/lib/pear');
             //  put sgl lib dir in include path
             $sglLibDir =  SGL_PATH . '/lib';
         }
 
-        if (!defined('PATH_SEPARATOR')) { // defined in >= PHP 4.3.4
-            define('PATH_SEPARATOR', (substr(PHP_OS, 0, 3) == 'WIN') ? ';' : ':');
-        }
         $sglPath = '.' . PATH_SEPARATOR . SGL_LIB_PEAR_DIR . PATH_SEPARATOR . $sglLibDir .
             PATH_SEPARATOR . get_include_path();
 #FIXMESGL11

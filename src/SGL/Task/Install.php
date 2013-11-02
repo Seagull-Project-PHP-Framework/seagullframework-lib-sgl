@@ -36,8 +36,6 @@
 // +---------------------------------------------------------------------------+
 // | Author:   Demian Turner <demian@phpkitchen.com>                           |
 // +---------------------------------------------------------------------------+
-require_once dirname(__FILE__) . '/../Task.php';
-require_once dirname(__FILE__) . '/../Install/Common.php';
 
 /**
  * @package Task
@@ -480,8 +478,6 @@ class SGL_Task_DropTables extends SGL_UpdateHtmlTask
 {
     function run($data)
     {
-        require_once SGL_CORE_DIR . '/Sql.php';
-
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1
                 && (!array_key_exists('useExistingData', $data) || $data['useExistingData'] == 0)) {
             $this->setup();
@@ -615,7 +611,6 @@ class SGL_Task_CreateTables extends SGL_UpdateHtmlTask
 {
     function run($data)
     {
-        require_once SGL_CORE_DIR . '/Sql.php';
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
             $this->setup();
 
@@ -1175,7 +1170,6 @@ class SGL_Task_CreateFileSystem extends SGL_Task
 {
     function run($data)
     {
-        require_once 'System.php';
         $err = false;
 
         //  pass paths as arrays to avoid widows space parsing prob
@@ -1235,7 +1229,6 @@ class SGL_Task_CreateDataObjectEntities extends SGL_Task
         $oTask = new SGL_Task_InitialiseDbDataObject();
         $ok = $oTask->run($conf);
 
-        require_once 'DB/DataObject/Generator.php';
         ob_start();
         // remove original dbdo keys file as it is unable to update an existing file
         $keysFile = SGL_ENT_DIR . '/' . $conf['db']['name'] . '.ini';

@@ -9,20 +9,16 @@ class SGL_Task_SetupConstantsStart extends SGL_Task
     function run($conf = array())
     {
         // framework file structure
-        if (defined('SGL_PEAR_INSTALLED')) {
-            define('SGL_VAR_DIR',              '@DATA-DIR@/Seagull/var');
-            define('SGL_ETC_DIR',              '@DATA-DIR@/Seagull/etc');
-            define('SGL_APP_ROOT',             '@PHP-DIR@/Seagull');
-        } else {
-            define('SGL_VAR_DIR',               SGL_PATH . '/var');
-            define('SGL_ETC_DIR',               SGL_PATH . '/etc');
-            define('SGL_APP_ROOT',              SGL_PATH);
-        }
+        define('SGL_VAR_DIR',               SGL_PATH . '/var');
+        define('SGL_ETC_DIR',               SGL_PATH . '/etc');
+        define('SGL_APP_ROOT',              SGL_PATH);
         define('SGL_LOG_DIR',                   SGL_VAR_DIR . '/log');
         define('SGL_CACHE_DIR',                 SGL_VAR_DIR . '/cache');
+#FIXMESGL11
         define('SGL_LIB_DIR',                   SGL_APP_ROOT . '/lib');
         define('SGL_ENT_DIR',                   SGL_CACHE_DIR . '/entities');
-        define('SGL_DAT_DIR',                   SGL_APP_ROOT . '/lib/data');
+        define('SGL_DAT_DIR',                   SGL_APP_ROOT . '/data');
+#FIXMESGL11
         define('SGL_CORE_DIR',                  SGL_APP_ROOT . '/lib/SGL');
 
         //  error codes to use with SGL::raiseError()
