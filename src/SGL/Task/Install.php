@@ -624,7 +624,7 @@ class SGL_Task_CreateTables extends SGL_UpdateHtmlTask
             }
             //  Load each module's schema, if there is a sql file in /data
             foreach ($data['aModuleList'] as $module) {
-                $modulePath = SGL_MOD_DIR . '/' . $module  . '/data';
+                $modulePath = SGL_MOD_DIR . $module  . '/data';
 
                 //  Load the module's schema
                 if (file_exists($modulePath . $this->filename1)) {
@@ -1811,7 +1811,7 @@ class SGL_Task_CreateAdminUser extends SGL_Task
     {
         $ok = true;
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
-            require_once SGL_MOD_DIR . '/user/classes/UserDAO.php';
+            require_once SGL_MOD_DIR . 'user/classes/UserDAO.php';
             $da =  UserDAO::singleton();
             $oUser = $da->getUserById();
             $oUser->username        = $data['adminUserName'];
