@@ -57,10 +57,11 @@ class SGL_Task_SetupConstantsFinish extends SGL_Task
         }
 
         define('SGL_THEME_DIR', SGL_WEB_ROOT . '/themes');
+#FIXMESGL11
         if (!empty($conf['path']['moduleDirOverride'])) {
             define('SGL_MOD_DIR', SGL_APP_ROOT . '/' . $conf['path']['moduleDirOverride']);
         } else {
-            define('SGL_MOD_DIR', SGL_APP_ROOT . '/modules');
+            define('SGL_MOD_DIR',  '');
         }
         if (!empty($conf['path']['uploadDirOverride'])) {
             define('SGL_UPLOAD_DIR', SGL_PATH . $conf['path']['uploadDirOverride']);

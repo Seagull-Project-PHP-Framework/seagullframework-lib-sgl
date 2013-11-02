@@ -870,7 +870,7 @@ class SGL_Task_BuildNavigation extends SGL_UpdateHtmlTask
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1
                 && (!array_key_exists('useExistingData', $data) || $data['useExistingData'] == 0)
                 && SGL_Config::get('navigation.driver') != 'ArrayDriver') {
-            require_once SGL_MOD_DIR . '/navigation/classes/NavigationDAO.php';
+            require_once SGL_MOD_DIR . 'navigation/classes/NavigationDAO.php';
             $da =  NavigationDAO::singleton();
 
             foreach ($data['aModuleList'] as $module) {
