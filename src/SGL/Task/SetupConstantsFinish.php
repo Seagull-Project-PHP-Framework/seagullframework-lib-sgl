@@ -42,8 +42,9 @@ class SGL_Task_SetupConstantsFinish extends SGL_Task
 
             //  add additional search paths
             if (!empty($conf['path']['additionalIncludePath'])) {
-                $ok = ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR
-                    . $conf['path']['additionalIncludePath']);
+#FIXMESGL11
+//                $ok = ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR
+//                    . $conf['path']['additionalIncludePath']);
             }
         }
 

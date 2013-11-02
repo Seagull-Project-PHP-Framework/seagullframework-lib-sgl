@@ -44,11 +44,12 @@ class SGL_Task_SetupPaths extends SGL_Task
         }
         $sglPath = '.' . PATH_SEPARATOR . SGL_LIB_PEAR_DIR . PATH_SEPARATOR . $sglLibDir .
             PATH_SEPARATOR . get_include_path();
-        $allowed = @ini_set('include_path', $sglPath);
+#FIXMESGL11
+//        $allowed = @ini_set('include_path', $sglPath);
         if (!$allowed) {
             //  depends on PHP version being >= 4.3.0
             if (function_exists('set_include_path')) {
-                set_include_path($sglPath);
+//                set_include_path($sglPath);
             } else {
                 die('You need at least PHP 4.3.0 if you want to run Seagull
                 with safe mode enabled.');

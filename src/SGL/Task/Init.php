@@ -39,7 +39,7 @@
 // $Id: Init.php,v 1.85 2005/06/22 00:40:44 demian Exp $
 
 /**
- * Basic init tasks: sets up paths, contstants, include_path, etc.
+ * Basic init tasks: sets up paths, constants, include_path, etc.
  *
  * @author  Demian Turner <demian@phpkitchen.com>
  */

@@ -44,9 +44,6 @@ define('SGL_RECOMMENDED', 1);
 define('SGL_REQUIRED', 2);
 define('SGL_FORBIDDEN', 3);
 
-require_once dirname(__FILE__) . '/../Request.php';
-require_once dirname(__FILE__) . '/../Task.php';
-
 function bool2words($key)
 {
     return ($key === true || $key === 1) ? 'Yes' : 'No';
@@ -392,7 +389,8 @@ class SGL_Task_GetPearInfo extends SGL_EnvSummaryTask
             $this->aData['pearFolderExists'] = bool2int(file_exists(SGL_LIB_PEAR_DIR));
             $this->aData['pearLibIsLoadable'] = bool2int(include_once SGL_LIB_PEAR_DIR . '/PEAR.php');
             $includeSeparator = (substr(PHP_OS, 0, 3) == 'WIN') ? ';' : ':';
-            $ok = @ini_set('include_path',      '.' . $includeSeparator . SGL_LIB_PEAR_DIR);
+#FIXMESGL11
+//            $ok = @ini_set('include_path',      '.' . $includeSeparator . SGL_LIB_PEAR_DIR);
             $this->aData['pearPath'] = @ini_get('include_path');
             $this->aData['pearSystemLibIsLoadable'] = bool2int(require_once 'System.php');
             $this->aData['pearRegistryLibIsLoadable'] = bool2int(require_once 'PEAR/Registry.php');
