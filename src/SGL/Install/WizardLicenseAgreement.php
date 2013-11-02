@@ -55,7 +55,7 @@ class SGL_Install_WizardLicenseAgreement extends HTML_QuickForm_Page
     {
         $this->_formBuilt = true;
 
-        $licenseTxt = file_get_contents(SGL_PATH . '/COPYING.txt');
+        $licenseTxt = file_get_contents(SGL_PATH . '/LICENSE');
         $this->setDefaults(array(
             'license' => $licenseTxt,
             ));
