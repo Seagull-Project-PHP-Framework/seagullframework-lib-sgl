@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: demian
- * Date: 18/10/2013
- * Time: 23:20
- * To change this template use File | Settings | File Templates.
- */
+
 /**
  * Concrete simple url parser strategy.
  *
  */
-class SGL_UrlParser_SimpleStrategy extends SGL_UrlParserStrategy
+class SGL_UrlParser_SimpleStrategy extends SGL_UrlParser_Strategy
 {
     /**
      * Analyzes querystring content and parses it into module/manager/action

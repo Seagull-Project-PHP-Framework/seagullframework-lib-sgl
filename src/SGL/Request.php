@@ -63,12 +63,6 @@ class SGL_Request
                 ? $this->_getRequestType()
                 : $type;
             $typeName = $this->constantToString($type);
-            $file = SGL_CORE_DIR . '/Request/' . $typeName . '.php';
-            if (!is_file($file)) {
-              return PEAR::raiseError('Request driver could not be located',
-                  SGL_ERROR_NOFILE);
-            }
-            require_once $file;
             $class = 'SGL_Request_' . $typeName;
             if (!class_exists($class)) {
               return PEAR::raiseError('Request driver class does not exist',

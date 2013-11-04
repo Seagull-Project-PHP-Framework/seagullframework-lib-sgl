@@ -46,7 +46,7 @@
  * @author  Demian Turner <demian@phpkitchen.com>
  * @version $Revision: 1.5 $
  */
-class SGL_UrlParser_ClassicStrategy extends SGL_UrlParserStrategy
+class SGL_UrlParser_ClassicStrategy extends SGL_UrlParser_Strategy
 {
     /**
      * Parses raw querystring and returns an array of it

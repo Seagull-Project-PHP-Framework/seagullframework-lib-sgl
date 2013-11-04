@@ -624,7 +624,7 @@ class SGL_Task_CreateTables extends SGL_UpdateHtmlTask
             }
             //  Load each module's schema, if there is a sql file in /data
             foreach ($data['aModuleList'] as $module) {
-                $modulePath = SGL_MOD_DIR . $module  . '/data';
+                $modulePath = SGL_MOD_DIR . '/'. $module  . '/data';
 
                 //  Load the module's schema
                 if (file_exists($modulePath . $this->filename1)) {
@@ -870,7 +870,7 @@ class SGL_Task_BuildNavigation extends SGL_UpdateHtmlTask
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1
                 && (!array_key_exists('useExistingData', $data) || $data['useExistingData'] == 0)
                 && SGL_Config::get('navigation.driver') != 'ArrayDriver') {
-            require_once SGL_MOD_DIR . 'navigation/classes/NavigationDAO.php';
+            require_once SGL_MOD_DIR . '/navigation/classes/NavigationDAO.php';
             $da =  NavigationDAO::singleton();
 
             foreach ($data['aModuleList'] as $module) {
@@ -1811,7 +1811,7 @@ class SGL_Task_CreateAdminUser extends SGL_Task
     {
         $ok = true;
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
-            require_once SGL_MOD_DIR . 'user/classes/UserDAO.php';
+            require_once SGL_MOD_DIR . '/user/classes/UserDAO.php';
             $da =  UserDAO::singleton();
             $oUser = $da->getUserById();
             $oUser->username        = $data['adminUserName'];

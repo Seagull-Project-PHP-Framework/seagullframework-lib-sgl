@@ -832,15 +832,4 @@ class SGL_URL
     }
 }
 
-/**
- * Abstract url parser strategy
- *
- * @abstract
- */
-class SGL_UrlParserStrategy
-{
-    function parseQueryString(SGL_Url $url) {}
-
-    function makeLink($action, $mgr, $mod, $aList, $params, $idx, $output) {}
-}
 ?>

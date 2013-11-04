@@ -8,8 +8,6 @@
  */
 
 require_once SGL_MOD_DIR . '/navigation/classes/NavigationDAO.php';
-require_once SGL_CORE_DIR . '/UrlParser/SimpleStrategy.php';
-
 
 /**
  * Concrete alias url parser strategy

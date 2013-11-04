@@ -37,41 +37,6 @@
 // | Author:   Demian Turner <demian@phpkitchen.com>                           |
 // +---------------------------------------------------------------------------+
 
-/**
- * Basic app process tasks: enables profiling and output buffering.
- *
- * @package Task
- * @author  Demian Turner <demian@phpkitchen.com>
- */
-class SGL_Task_Init extends SGL_DecorateProcess
-{
-    function process($input, $output)
-    {
-        if (SGL_PROFILING_ENABLED && function_exists('apd_set_pprof_trace')) {
-            apd_set_pprof_trace();
-        }
-        //  start output buffering
-        if (SGL_Config::get('site.outputBuffering')) {
-            ob_start();
-        }
-
-        $this->processRequest->process($input, $output);
-    }
-}
-
-/**
- * @package Task
- */
-class SGL_Task_SetupORM extends SGL_DecorateProcess
-{
-    function process($input, $output)
-    {
-        $oTask = new SGL_Task_InitialiseDbDataObject();
-        $ok = $oTask->run();
-
-        $this->processRequest->process($input, $output);
-    }
-}
 
 /**
  * Block blacklisted users by IP.
@@ -816,23 +781,6 @@ class SGL_Task_ResolveManager extends SGL_DecorateProcess
             }
         }
         return false;
-    }
-}
-
-/**
- * @package Task
- */
-class SGL_Task_StripMagicQuotes extends SGL_DecorateProcess
-{
-    function process($input, $output)
-    {
-        SGL::logMessage(null, PEAR_LOG_DEBUG);
-
-        $req = $input->getRequest();
-        SGL_String::dispelMagicQuotes($req->aProps);
-        $input->setRequest($req);
-
-        $this->processRequest->process($input, $output);
     }
 }
 

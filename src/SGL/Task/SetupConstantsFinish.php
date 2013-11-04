@@ -61,7 +61,7 @@ class SGL_Task_SetupConstantsFinish extends SGL_Task
         if (!empty($conf['path']['moduleDirOverride'])) {
             define('SGL_MOD_DIR', SGL_APP_ROOT . '/' . $conf['path']['moduleDirOverride']);
         } else {
-            define('SGL_MOD_DIR',  '');
+            define('SGL_MOD_DIR',  SGL_APP_ROOT . '/modules');
         }
         if (!empty($conf['path']['uploadDirOverride'])) {
             define('SGL_UPLOAD_DIR', SGL_PATH . $conf['path']['uploadDirOverride']);

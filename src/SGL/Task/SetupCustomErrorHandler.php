@@ -11,7 +11,6 @@ class SGL_Task_SetupCustomErrorHandler extends SGL_Task
         if (isset( $conf['debug']['customErrorHandler'])
             && $conf['debug']['customErrorHandler'] == true
             && !defined('SGL_TEST_MODE')) {
-            require_once SGL_CORE_DIR . '/ErrorHandler.php';
             $eh = new SGL_ErrorHandler();
             $eh->startHandler();
 

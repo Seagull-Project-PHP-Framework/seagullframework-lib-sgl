@@ -50,7 +50,7 @@
  * Concrete SEF url parser strategy
  *
  */
-class SGL_UrlParser_SefStrategy extends SGL_UrlParserStrategy
+class SGL_UrlParser_SefStrategy extends SGL_UrlParser_Strategy
 {
     /**
      * Analyzes querystring content and parses it into module/manager/action and params.

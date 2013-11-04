@@ -61,45 +61,26 @@ if (!isset($GLOBALS['varDir'])) {
 //                    "<code>'chmod -R 777 seagull/var'</code>");
 //          }
 
-/**
- * @package Task
- */
-class SGL_Task_InitialiseModules extends SGL_Task
-{
-    function run($conf = array())
-    {
-        $c = SGL_Config::singleton();
-        $conf = $c->getAll();
 
-        //  skip if we're in installer
-        if (defined('SGL_INSTALLED')) {
-            $locator = SGL_ServiceLocator::singleton();
-            $dbh = $locator->get('DB');
-            if (!$dbh) {
-                $dbh =  SGL_DB::singleton();
-                $locator->register('DB', $dbh);
-            }
-            //  this task can be called when installing a new module
-            if (!empty($conf['aModuleList'])) {
-                $oMod = new stdClass();
-                $oMod->name = $conf['aModuleList'][0];
-                $aRet[] = $oMod;
-            } else {
-                $query = "
-                    SELECT  name
-                    FROM    {$conf['table']['module']}
-                    ";
-                $aRet = $dbh->getAll($query);
-            }
-            if (is_array($aRet) && count($aRet)) {
-                foreach ($aRet as $oModule) {
-                    $moduleInitFile = SGL_MOD_DIR . '/' . $oModule->name . '/init.php';
-                    if (is_file($moduleInitFile)) {
-                        require_once $moduleInitFile;
-                    }
-                }
-            }
+/**
+ * Basic app process tasks: enables profiling and output buffering.
+ *
+ * @package Task
+ * @author  Demian Turner <demian@phpkitchen.com>
+ */
+class SGL_Task_Init extends SGL_DecorateProcess
+{
+    function process($input, $output)
+    {
+        if (SGL_PROFILING_ENABLED && function_exists('apd_set_pprof_trace')) {
+            apd_set_pprof_trace();
         }
+        //  start output buffering
+        if (SGL_Config::get('site.outputBuffering')) {
+            ob_start();
+        }
+
+        $this->processRequest->process($input, $output);
     }
 }
 
@@ -127,95 +108,6 @@ class SGL_OutputRendererStrategy
      * @param SGL_View $view
      */
     function render(SGL_View $view) {}
-}
-
-/**
- * Container for output data and renderer strategy.
- *
- * @abstract
- * @package SGL
- */
-class SGL_View
-{
-    /**
-     * Output object.
-     *
-     * @var SGL_Output
-     */
-    var $data;
-
-    /**
-     * Reference to renderer strategy.
-     *
-     * @var SGL_OutputRendererStrategy
-     */
-    var $rendererStrategy;
-
-    /**
-     * Constructor.
-     *
-     * @param SGL_Output $data
-     * @param SGL_OutputRendererStrategy $rendererStrategy
-     * @return SGL_View
-     */
-    function SGL_View(&$data, $rendererStrategy)
-    {
-        $this->data = $data;
-        $this->rendererStrategy = $rendererStrategy;
-    }
-
-    /**
-     * Post processing tasks specific to view type.
-     *
-     * @abstract
-     * @return boolean
-     */
-    function postProcess() {}
-
-
-    /**
-     * Delegates rendering strategy based on view.
-     *
-     * @return string   Rendered output data
-     */
-    function render()
-    {
-        return $this->rendererStrategy->render($this);
-    }
-}
-
-/**
- * Wrapper for simple HTML views.
- *
- * @package SGL
- */
-class SGL_HtmlSimpleView extends SGL_View
-{
-    /**
-     * HTML renderer decorator
-     *
-     * @param SGL_Output $data
-     * @param null $templateEngine
-     * @return string   Rendered output data
-     */
-    function SGL_HtmlSimpleView(&$data, $templateEngine = null)
-    {
-        //  prepare renderer class
-        if (!$templateEngine) {
-            $templateEngine = SGL_Config::get('site.templateEngine');
-        }
-        $templateEngine = ucfirst($templateEngine);
-        $rendererClass  = 'SGL_HtmlRenderer_' . $templateEngine . 'Strategy';
-        $rendererFile   = $templateEngine.'Strategy.php';
-
-        if (is_file(SGL_LIB_DIR . '/SGL/HtmlRenderer/' . $rendererFile)) {
-            require_once SGL_LIB_DIR . '/SGL/HtmlRenderer/' . $rendererFile;
-        } else {
-            PEAR::raiseError('Could not find renderer', SGL_ERROR_NOFILE,
-                PEAR_ERROR_DIE);
-        }
-        parent::SGL_View($data, new $rendererClass);
-    }
 }
 
 ?>
