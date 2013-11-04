@@ -162,7 +162,7 @@ class SGL_URL
         if (is_null($parserStrategy)) {
             $this->aStrategies[] = new SGL_UrlParser_SefStrategy();
         }
-        if (!is_array($parserStrategy) && is_a($parserStrategy, 'SGL_UrlParserStrategy')) {
+        if (!is_array($parserStrategy) && is_a($parserStrategy, 'SGL_UrlParser_Strategy')) {
             $this->aStrategies[] = $parserStrategy;
 
         } elseif (is_array($parserStrategy)) {

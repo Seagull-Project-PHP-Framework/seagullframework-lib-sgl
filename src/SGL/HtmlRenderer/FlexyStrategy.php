@@ -25,7 +25,6 @@ class SGL_HtmlRenderer_FlexyStrategy extends SGL_OutputRendererStrategy
         SGL::setNoticeBehaviour(SGL_NOTICES_DISABLED);
 
         //  prepare flexy object
-        require_once 'HTML/Template/Flexy.php';
         $flexy = $this->initEngine($view->data);
 
         $masterTemplate = isset($view->data->masterTemplate)

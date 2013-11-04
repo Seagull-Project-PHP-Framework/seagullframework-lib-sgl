@@ -9,7 +9,7 @@ class SGL_Task_SetupConstantsFinish extends SGL_Task
     {
         //  include Log.php if logging enabled
         if (isset($conf['log']['enabled']) && $conf['log']['enabled']) {
-            require_once 'Log.php';
+//            require_once 'Log.php';
 
         } else {
             //  define log levels to avoid notices, since Log.php not included
@@ -50,8 +50,6 @@ class SGL_Task_SetupConstantsFinish extends SGL_Task
 
         if (isset($conf['path']['webRoot'])) {
             define('SGL_WEB_ROOT', $conf['path']['webRoot']);
-        } elseif (defined('SGL_PEAR_INSTALLED')) {
-            define('SGL_WEB_ROOT', '@WEB-DIR@/Seagull/www');
         } else {
             define('SGL_WEB_ROOT', SGL_PATH . '/www');
         }

@@ -240,7 +240,7 @@ class SGL_Translation
      * Update GUI Translations.
      *
      * @static
-     * @param array $aTrans hash containing tranlsations to be updated
+     * @param array $aTrans hash containing translations to be updated
      * @param string $langID language id
      * @param string $module module
      *
@@ -251,9 +251,7 @@ class SGL_Translation
     {
         switch (strtolower($this->conf['translation']['container'])) {
         case 'db':
-            require_once SGL_CORE_DIR . '/Translation.php';
             $trans = SGL_Translation::singleton('admin');
-
             $langID = SGL_Translation::transformLangID($langID, SGL_LANG_ID_TRANS2);
 
             foreach ($aTrans as $key => $value) {
@@ -599,7 +597,7 @@ class SGL_Translation
         }
         $ok = touch($targetDir . '/' . $fileName);
         if ($ok === false) {
-            return SGL::raiseError(__CLASS__ . ': error creating transation '
+            return SGL::raiseError(__CLASS__ . ': error creating translation '
                 . 'locking file', SGL_ERROR_INVALIDFILEPERMS);
         }
         file_put_contents($targetDir . '/' . $fileName,
@@ -670,7 +668,7 @@ class SGL_Translation
                     $ok = unlink($configFile);
                     if ($ok === false) {
                         return SGL::raiseError(__CLASS__ . ': error removing '
-                            . 'transation locking file',
+                            . 'translation locking file',
                             SGL_ERROR_INVALIDFILEPERMS);
                     }
                 }
@@ -693,7 +691,6 @@ class SGL_Translation
     function ensureDirIsWrirable($dirName)
     {
         if (!is_writable($dirName)) {
-            require_once 'System.php';
             $ok = System::mkDir(array('-p', $dirName));
             if (PEAR::isError($ok)) {
                 return $ok;

@@ -140,7 +140,6 @@ class SGL_FrontController
             $process->process($input, $output);
 
         } else {
-            require_once dirname(__FILE__)  . '/FilterChain.php';
             $chain = new SGL_FilterChain($input->getFilters());
             $chain->doFilter($input, $output);
         }
