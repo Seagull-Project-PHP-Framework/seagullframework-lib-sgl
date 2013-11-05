@@ -4,6 +4,6 @@ class SGL_Task_PostInstallSetup extends SGL_Task
 {
     function run($conf = array())
     {
-        print "test was executed";
+        file_put_contents("/tmp/FOO", "test");
     }
 }
