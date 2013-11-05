@@ -20,6 +20,7 @@ class SGL_Task_SetupConstantsStart extends SGL_Task
         define('SGL_DAT_DIR',                   SGL_APP_ROOT . '/data');
 #FIXMESGL11
         define('SGL_CORE_DIR',                  SGL_APP_ROOT . '/lib/SGL');
+        define('SGL_VENDOR_DIR',                SGL_APP_ROOT . '/vendor');
 
         //  error codes to use with SGL::raiseError()
         //  start at -100 in order not to conflict with PEAR::DB error codes
