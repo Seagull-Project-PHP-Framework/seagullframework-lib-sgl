@@ -57,7 +57,7 @@ class SGL_Task_SetupPaths extends SGL_Task
 //                with safe mode enabled.');
 //            }
 //        }
-//    }
+    }
 
     /**
      * Determines the name of the INI file, based on the host name.
@@ -67,7 +67,7 @@ class SGL_Task_SetupPaths extends SGL_Task
      *
      * @return  string  the name of the host
      */
-    public static  function hostnameToFilename()
+    public static function hostnameToFilename()
     {
         //  start with a default
         $hostName = 'localhost';
