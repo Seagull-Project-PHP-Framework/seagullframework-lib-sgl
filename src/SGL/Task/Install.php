@@ -73,7 +73,7 @@ class SGL_Task_SetBaseUrlMinimal extends SGL_Task
  */
 class SGL_Task_SetTimeout extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         if (array_key_exists('storeTranslationsInDB', $data)
             && $data['storeTranslationsInDB'] == 1)
@@ -91,7 +91,7 @@ class SGL_Task_SetTimeout extends SGL_Task
  */
 class SGL_Task_CreateConfig extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         $c = SGL_Config::singleton($autoLoad = false);
         $oldConf = $c->getAll(); // save old config on re-install
@@ -287,7 +287,7 @@ class SGL_UpdateHtmlTask extends SGL_Task
  */
 class SGL_Task_DefineTableAliases extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         $c = SGL_Config::singleton();
 
@@ -319,7 +319,7 @@ class SGL_Task_DefineTableAliases extends SGL_Task
  */
 class SGL_Task_DisableForeignKeyChecks extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         $c = SGL_Config::singleton();
         $this->conf = $c->getAll();
@@ -350,7 +350,7 @@ class SGL_Task_DisableForeignKeyChecks extends SGL_Task
  */
 class SGL_Task_CreateDatabase extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         $c = SGL_Config::singleton();
         $this->conf = $c->getAll();
@@ -376,7 +376,7 @@ class SGL_Task_CreateDatabase extends SGL_Task
  */
 class SGL_Task_DropDatabase extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         $c = SGL_Config::singleton();
         $this->conf = $c->getAll();
@@ -397,7 +397,7 @@ class SGL_Task_DropDatabase extends SGL_Task
  */
 class SGL_Task_PrepareInstallationProgressTable extends SGL_UpdateHtmlTask
 {
-    function run($data)
+    function run($data = array())
     {
         SGL_Install_Common::printHeader('Building Database');
 
@@ -476,7 +476,7 @@ class SGL_Task_PrepareInstallationProgressTable extends SGL_UpdateHtmlTask
  */
 class SGL_Task_DropTables extends SGL_UpdateHtmlTask
 {
-    function run($data)
+    function run($data = array())
     {
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1
                 && (!array_key_exists('useExistingData', $data) || $data['useExistingData'] == 0)) {
@@ -609,7 +609,7 @@ class SGL_Task_DropTables extends SGL_UpdateHtmlTask
  */
 class SGL_Task_CreateTables extends SGL_UpdateHtmlTask
 {
-    function run($data)
+    function run($data = array())
     {
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
             $this->setup();
@@ -661,7 +661,7 @@ class SGL_Task_CreateTables extends SGL_UpdateHtmlTask
  */
 class SGL_Task_LoadDefaultData extends SGL_UpdateHtmlTask
 {
-    function run($data)
+    function run($data = array())
     {
         $result = false;
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
@@ -696,7 +696,7 @@ class SGL_Task_LoadDefaultData extends SGL_UpdateHtmlTask
  */
 class SGL_Task_LoadSampleData extends SGL_UpdateHtmlTask
 {
-    function run($data)
+    function run($data = array())
     {
         $result = false;
         if (array_key_exists('insertSampleData', $data) && $data['insertSampleData'] == 1) {
@@ -729,7 +729,7 @@ class SGL_Task_LoadSampleData extends SGL_UpdateHtmlTask
  */
 class SGL_Task_LoadCustomData extends SGL_UpdateHtmlTask
 {
-    function run($data)
+    function run($data = array())
     {
         $this->setup();
         $statusText = 'loading custom data';
@@ -753,7 +753,7 @@ class SGL_Task_LoadCustomData extends SGL_UpdateHtmlTask
  */
 class SGL_Task_RemoveDefaultData extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         require_once SGL_MOD_DIR . '/default/classes/DefaultDAO.php';
         $da =  DefaultDAO::singleton();
@@ -776,7 +776,7 @@ class SGL_Task_RemoveDefaultData extends SGL_Task
  */
 class SGL_Task_LoadBlockData extends SGL_UpdateHtmlTask
 {
-    function run($data)
+    function run($data = array())
     {
         $result = false;
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1
@@ -805,7 +805,7 @@ class SGL_Task_LoadBlockData extends SGL_UpdateHtmlTask
  */
 class SGL_Task_RemoveBlockData extends SGL_UpdateHtmlTask
 {
-    function run($data)
+    function run($data = array())
     {
 
         $this->setup();
@@ -830,7 +830,7 @@ class SGL_Task_RemoveBlockData extends SGL_UpdateHtmlTask
  */
 class SGL_Task_CreateConstraints extends SGL_UpdateHtmlTask
 {
-    function run($data)
+    function run($data = array())
     {
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
             $this->setup();
@@ -865,7 +865,7 @@ class SGL_Task_BuildNavigation extends SGL_UpdateHtmlTask
     var $groupId = null;
     var $childId = null;
 
-    function run($data)
+    function run($data = array())
     {
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1
                 && (!array_key_exists('useExistingData', $data) || $data['useExistingData'] == 0)
@@ -916,7 +916,7 @@ class SGL_Task_BuildNavigation extends SGL_UpdateHtmlTask
  */
 class SGL_Task_RemoveNavigation extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         require_once SGL_MOD_DIR . '/navigation/classes/NavigationDAO.php';
         $da =  NavigationDAO::singleton();
@@ -941,7 +941,7 @@ class SGL_Task_RemoveNavigation extends SGL_Task
  */
 class SGL_Task_DeregisterModule extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         $ok = false;
         foreach ($data['aModuleList'] as $module) {
@@ -959,7 +959,7 @@ class SGL_Task_DeregisterModule extends SGL_Task
  */
 class SGL_Task_EnableDebugBlock extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         require_once SGL_MOD_DIR . '/block/classes/BlockDAO.php';
         $da =  BlockDAO::singleton();
@@ -982,7 +982,7 @@ class SGL_Task_EnableDebugBlock extends SGL_Task
  */
 class SGL_Task_LoadTranslations extends SGL_UpdateHtmlTask
 {
-    function run($data)
+    function run($data = array())
     {
         $c = SGL_Config::singleton();
         $aLangOptions = SGL_Util::getLangsDescriptionMap();
@@ -1091,7 +1091,7 @@ class SGL_Task_LoadTranslations extends SGL_UpdateHtmlTask
  */
 class SGL_Task_EnableForeignKeyChecks extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         $c = SGL_Config::singleton();
         $this->conf = $c->getAll();
@@ -1117,7 +1117,7 @@ class SGL_Task_EnableForeignKeyChecks extends SGL_Task
  */
 class SGL_Task_VerifyDbSetup extends SGL_UpdateHtmlTask
 {
-    function run($data)
+    function run($data = array())
     {
         $this->setup();
 
@@ -1168,7 +1168,7 @@ class SGL_Task_VerifyDbSetup extends SGL_UpdateHtmlTask
  */
 class SGL_Task_CreateFileSystem extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         $err = false;
 
@@ -1807,7 +1807,7 @@ class SGL_Task_SyncSequences extends SGL_Task
  */
 class SGL_Task_CreateAdminUser extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         $ok = true;
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
@@ -1842,7 +1842,7 @@ class SGL_Task_CreateAdminUser extends SGL_Task
  */
 class SGL_Task_CreateMemberUser extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
             require_once SGL_MOD_DIR . '/user/classes/UserDAO.php';
@@ -1874,7 +1874,7 @@ class SGL_Task_CreateMemberUser extends SGL_Task
  */
 class SGL_Task_InstallerCleanup extends SGL_Task
 {
-    function run($data)
+    function run($data = array())
     {
         $newFile = <<<PHP
 <?php

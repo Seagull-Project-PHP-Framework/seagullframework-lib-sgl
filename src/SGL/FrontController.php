@@ -256,6 +256,7 @@ class SGL_FrontController
         $init->addTask(new SGL_Task_EnsurePlaceholderDbPrefixIsNull());
         $init->addTask(new SGL_Task_SetGlobals());
         $init->addTask(new SGL_Task_ModifyIniSettings());
+#FIXMESGL11
 //        $init->addTask(new SGL_Task_SetupPearErrorCallback());
         $init->addTask(new SGL_Task_SetupCustomErrorHandler());
         $init->addTask(new SGL_Task_SetBaseUrl());
