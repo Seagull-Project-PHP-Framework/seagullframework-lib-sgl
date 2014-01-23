@@ -2,8 +2,8 @@
 
 // if SGL_FrontController::init() called without index.php
 if (!isset($GLOBALS['varDir'])) {
-    $GLOBALS['varDir']  = realpath(dirname(__FILE__) . '/../../../var');
-    $GLOBALS['rootDir'] = realpath(dirname(__FILE__) . '/../../../');
+    $GLOBALS['varDir']  = realpath(dirname(__FILE__) . '/../../../../../../var');
+    $GLOBALS['rootDir'] = realpath(dirname(__FILE__) . '/../../../../../../');
 }
 
 /**
