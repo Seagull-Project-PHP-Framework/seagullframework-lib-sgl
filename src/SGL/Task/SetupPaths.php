@@ -1,4 +1,11 @@
 <?php
+
+// if SGL_FrontController::init() called without index.php
+if (!isset($GLOBALS['varDir'])) {
+    $GLOBALS['varDir']  = realpath(dirname(__FILE__) . '/../../../var');
+    $GLOBALS['rootDir'] = realpath(dirname(__FILE__) . '/../../../');
+}
+
 /**
  * @package Task
  */
@@ -19,26 +26,23 @@ class SGL_Task_SetupPaths extends SGL_Task
     public function run($conf = array())
     {
         define('SGL_SERVER_NAME', $this->hostnameToFilename());
-        if (defined('SGL_PEAR_INSTALLED')) {
-            define('SGL_PATH', '@PHP-DIR@/Seagull');
-            define('SGL_LIB_PEAR_DIR', '@PHP-DIR@');
-        } else {
-            $path = $GLOBALS['varDir']  . '/INSTALL_COMPLETE.php';
-            if (is_file($path)) {
-                $configFile = $GLOBALS['varDir']  . '/'
-                    . SGL_Task_SetupPaths::hostnameToFilename() . '.conf.php';
-                require_once $configFile;
-                if (!empty($conf['path']['installRoot'])) {
-                    define('SGL_PATH', $conf['path']['installRoot']);
-                }
-            } else {
-                define('SGL_PATH', $GLOBALS['rootDir']);
+
+        $path = $GLOBALS['varDir']  . '/INSTALL_COMPLETE.php';
+        if (is_file($path)) {
+            $configFile = $GLOBALS['varDir']  . '/'
+                . SGL_Task_SetupPaths::hostnameToFilename() . '.conf.php';
+            require_once $configFile;
+            if (!empty($conf['path']['installRoot'])) {
+                define('SGL_PATH', $conf['path']['installRoot']);
             }
-#FIXMESGL11
-            define('SGL_LIB_PEAR_DIR', SGL_PATH . '/lib/pear');
-            //  put sgl lib dir in include path
-            $sglLibDir =  SGL_PATH . '/lib';
+        } else {
+            define('SGL_PATH', $GLOBALS['rootDir']);
         }
+#FIXMESGL11
+        define('SGL_LIB_PEAR_DIR', SGL_PATH . '/lib/pear');
+        //  put sgl lib dir in include path
+        $sglLibDir =  SGL_PATH . '/lib';
+
 
         $sglPath = '.' . PATH_SEPARATOR . SGL_LIB_PEAR_DIR . PATH_SEPARATOR . $sglLibDir .
             PATH_SEPARATOR . get_include_path();
