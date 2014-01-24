@@ -42,7 +42,7 @@
  */
 class SGL_Task_SetBaseUrlMinimal extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         // no data if we're running installer
         if (!defined('SGL_INSTALLED')) {

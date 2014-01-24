@@ -5,7 +5,7 @@
  */
 class SGL_Task_EnsureFC extends SGL_Task
 {
-    function run($conf = array())
+    public static function run($conf = array())
     {
         //  load BC functions depending on PHP version detected
         if (version_compare(phpversion(), "5.3.0", '>=')) {

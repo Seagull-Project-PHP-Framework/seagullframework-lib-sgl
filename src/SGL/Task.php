@@ -49,7 +49,7 @@ abstract class SGL_Task
     /**
      * 
      */
-    public function run($data = array())
+    public static function run($data = array())
     {
         return $data;
     }
