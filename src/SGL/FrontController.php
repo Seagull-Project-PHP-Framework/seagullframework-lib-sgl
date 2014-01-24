@@ -243,7 +243,6 @@ class SGL_FrontController
 
     public static function init()
     {
-        error_reporting(E_ALL ^ E_DEPRECATED);
         SGL_FrontController::setupMinimumEnv();
 
         $autoLoad = (is_file(SGL_VAR_DIR  . '/INSTALL_COMPLETE.php'))
