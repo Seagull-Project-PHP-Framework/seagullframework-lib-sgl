@@ -5,7 +5,7 @@
  */
 class SGL_Task_SetGlobals extends SGL_Task
 {
-    function run($conf = array())
+    public static function run($conf = array())
     {
         $GLOBALS['_SGL']['BANNED_IPS'] =        array();
         $GLOBALS['_SGL']['ERRORS'] =            array();

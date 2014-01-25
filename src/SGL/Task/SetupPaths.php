@@ -23,9 +23,9 @@ class SGL_Task_SetupPaths extends SGL_Task
      * @internal param array $data
      * @return array|void
      */
-    public function run($conf = array())
+    public static function run($conf = array())
     {
-        define('SGL_SERVER_NAME', $this->hostnameToFilename());
+        define('SGL_SERVER_NAME', self::hostnameToFilename());
 
         $path = $GLOBALS['varDir']  . '/INSTALL_COMPLETE.php';
         if (is_file($path)) {

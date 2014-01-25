@@ -6,7 +6,7 @@
  */
 class SGL_Task_SetupConstantsStart extends SGL_Task
 {
-    function run($conf = array())
+    public static function run($conf = array())
     {
         // framework file structure
         define('SGL_VAR_DIR',               SGL_PATH . '/var');

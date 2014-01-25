@@ -5,7 +5,7 @@
  */
 class SGL_Task_EnsurePlaceholderDbPrefixIsNull extends SGL_Task
 {
-    function run($conf = array())
+    public static function run($conf = array())
     {
         // for 0.6.x versions
         if (!empty($conf['db']['prefix'])

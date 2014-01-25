@@ -5,7 +5,7 @@
  */
 class SGL_Task_SetupCustomErrorHandler extends SGL_Task
 {
-    function run($conf = array())
+    public static function run($conf = array())
     {
         //  start custom PHP error handler
         if (isset( $conf['debug']['customErrorHandler'])

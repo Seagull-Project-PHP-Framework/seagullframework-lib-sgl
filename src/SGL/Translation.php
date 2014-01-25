@@ -317,43 +317,48 @@ class SGL_Translation
         if (!empty($module) && !empty($lang)) {
 
             $lang = SGL_Translation::transformLangID($lang, SGL_LANG_ID_TRANS2);
-            $installedLangs = explode(',', $conf['translation']['installedLanguages']);
-            if ($conf['translation']['container'] == 'db'
+            if (isset($conf['translation'])) {
+                $installedLangs = explode(',', $conf['translation']['installedLanguages']);
+                if ($conf['translation']['container'] == 'db'
                     && in_array($lang, $installedLangs)) {
-                $translation = SGL_Translation::singleton();
+                    $translation = SGL_Translation::singleton();
 
-                //  set language
-                $langInstalled = $translation->setLang($lang);
+                    //  set language
+                    $langInstalled = $translation->setLang($lang);
 
-                //  set translation group
-                $translation->setPageID($module);
+                    //  set translation group
+                    $translation->setPageID($module);
 
-                //  create decorator for fallback language
-                if ($fallbackLang) {
-                    $fallbackLang = (is_string($fallbackLang))
-                        ? $fallbackLang
-                        : $conf['translation']['fallbackLang'];
-                    $translation =  $translation->getDecorator('Lang');
-                    $translation->setOption('fallbackLang', $fallbackLang);
+                    //  create decorator for fallback language
+                    if ($fallbackLang) {
+                        $fallbackLang = (is_string($fallbackLang))
+                            ? $fallbackLang
+                            : $conf['translation']['fallbackLang'];
+                        $translation =  $translation->getDecorator('Lang');
+                        $translation->setOption('fallbackLang', $fallbackLang);
+                    }
+                    //  instantiate cachelite decorator and set options
+                    if ($conf['cache']['enabled']) {
+                        $translation = $translation->getDecorator('CacheLiteFunction');
+                        $translation->setOption('cacheDir', SGL_TMP_DIR .'/');
+                        $translation->setOption('lifeTime', $conf['cache']['lifetime']);
+                        $translation->setOption('defaultGroup', 'translation');
+                    }
+
+                    //  fetch translations
+                    $words = ($words = $translation->getPage()) ? $words : array();
+
+                    SGL::logMessage('translations from db for '. $module, PEAR_LOG_DEBUG);
+                    return $words;
+                } elseif ($conf['translation']['container'] == 'file') {
+                    return  SGL_Translation::getGuiTranslationsFromFile($module, $lang);
+                } else {
+                    return array();
                 }
-                //  instantiate cachelite decorator and set options
-                if ($conf['cache']['enabled']) {
-                    $translation = $translation->getDecorator('CacheLiteFunction');
-                    $translation->setOption('cacheDir', SGL_TMP_DIR .'/');
-                    $translation->setOption('lifeTime', $conf['cache']['lifetime']);
-                    $translation->setOption('defaultGroup', 'translation');
-                }
-
-                //  fetch translations
-                $words = ($words = $translation->getPage()) ? $words : array();
-
-                SGL::logMessage('translations from db for '. $module, PEAR_LOG_DEBUG);
-                return $words;
-            } elseif ($conf['translation']['container'] == 'file') {
-                return  SGL_Translation::getGuiTranslationsFromFile($module, $lang);
             } else {
                 return array();
             }
+
         } else {
             SGL::raiseError('Incorrect parameter passed to '.__CLASS__.'::'.__FUNCTION__,
                 SGL_ERROR_INVALIDARGS);
@@ -454,7 +459,12 @@ class SGL_Translation
     public static function getFallbackLangID($format = SGL_LANG_ID_TRANS2)
     {
         $lang = SGL_Config::get('translation.fallbackLang');
-        return SGL_Translation::transformLangID($lang, $format);
+        $ret = SGL_Translation::transformLangID($lang, $format);
+        // above fails on CLI invocation
+        if (empty($ret)) {
+            $ret = 'en-utf-8';
+        }
+        return $ret;
     }
 
     /**

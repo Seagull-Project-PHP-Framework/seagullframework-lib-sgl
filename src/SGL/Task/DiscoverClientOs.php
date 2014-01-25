@@ -8,7 +8,7 @@
  */
 class SGL_Task_DiscoverClientOs extends SGL_DecorateProcess
 {
-    function process($input, $output)
+    function process(SGL_Registry $input, SGL_Output $output)
     {
         SGL::logMessage(null, PEAR_LOG_DEBUG);
 

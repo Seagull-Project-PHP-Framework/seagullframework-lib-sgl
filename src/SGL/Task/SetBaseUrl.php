@@ -9,7 +9,7 @@
  */
 class SGL_Task_SetBaseUrl extends SGL_Task
 {
-    function run($conf = array())
+    public static function run($conf = array())
     {
         if (!(isset($conf['site']['baseUrl']))) {
 

@@ -8,7 +8,7 @@
 
 class SGL_Task_MinimalSession extends SGL_DecorateProcess
 {
-    function process($input, $output)
+    function process(SGL_Registry $input, SGL_Output $output)
     {
         session_start();
         $_SESSION['uid'] = 1;

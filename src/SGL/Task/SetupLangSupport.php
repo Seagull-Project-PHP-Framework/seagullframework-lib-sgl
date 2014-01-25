@@ -19,7 +19,7 @@ class SGL_Task_SetupLangSupport extends SGL_DecorateProcess
      * @param SGL_Registry $input
      * @param SGL_Output $output
      */
-    function process($input, $output)
+    function process(SGL_Registry $input, SGL_Output $output)
     {
         SGL::logMessage(null, PEAR_LOG_DEBUG);
 

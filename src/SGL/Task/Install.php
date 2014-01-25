@@ -73,7 +73,7 @@ class SGL_Task_SetBaseUrlMinimal extends SGL_Task
  */
 class SGL_Task_SetTimeout extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         if (array_key_exists('storeTranslationsInDB', $data)
             && $data['storeTranslationsInDB'] == 1)
@@ -91,7 +91,7 @@ class SGL_Task_SetTimeout extends SGL_Task
  */
 class SGL_Task_CreateConfig extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $c = SGL_Config::singleton($autoLoad = false);
         $oldConf = $c->getAll(); // save old config on re-install
@@ -212,7 +212,7 @@ class SGL_Task_CreateConfig extends SGL_Task
  */
 class SGL_UpdateHtmlTask extends SGL_Task
 {
-    function updateHtml($id, $displayHtml)
+    public static function updateHtml($id, $displayHtml)
     {
         if (SGL::runningFromCli() || defined('SGL_ADMIN_REBUILD')) {
             return false;
@@ -231,54 +231,54 @@ class SGL_UpdateHtmlTask extends SGL_Task
         flush();
     }
 
-    function setup()
+    public static function setup()
     {
         $c = SGL_Config::singleton();
-        $this->conf = $c->getAll();
+        self::$conf = $c->getAll();
 
         //  setup db type vars
-        $this->dbType = $this->conf['db']['type'];
+        self::$dbType = self::$conf['db']['type'];
 
-        switch ($this->conf['db']['type']) {
+        switch (self::$conf['db']['type']) {
         case 'pgsql':
-            $this->filename1 = '/schema.pg.sql';
-            $this->filename2 = '/data.default.pg.sql';
-            $this->filename3 = '/data.sample.pg.sql';
-            $this->filename4 = '/data.block.add.pg.sql';
-            $this->filename5 = '/data.custom.pg.sql';
-            $this->filename6 = '/data.test.pg.sql';
-            $this->filename7 = '/constraints.pg.sql';
+            self::$filename1 = '/schema.pg.sql';
+            self::$filename2 = '/data.default.pg.sql';
+            self::$filename3 = '/data.sample.pg.sql';
+            self::$filename4 = '/data.block.add.pg.sql';
+            self::$filename5 = '/data.custom.pg.sql';
+            self::$filename6 = '/data.test.pg.sql';
+            self::$filename7 = '/constraints.pg.sql';
             break;
 
         case 'mysql':
         case 'mysqli':
         case 'mysql_SGL':
         case 'mysqli_SGL':
-            $this->filename1 = '/schema.my.sql';
-            $this->filename2 = '/data.default.my.sql';
-            $this->filename3 = '/data.sample.my.sql';
-            $this->filename4 = '/data.block.add.my.sql';
-            $this->filename5 = '/data.custom.my.sql';
-            $this->filename6 = '/data.test.my.sql';
-            $this->filename7 = '/constraints.my.sql';
+            self::$ilename1 = '/schema.my.sql';
+            self::$filename2 = '/data.default.my.sql';
+            self::$filename3 = '/data.sample.my.sql';
+            self::$filename4 = '/data.block.add.my.sql';
+            self::$filename5 = '/data.custom.my.sql';
+            self::$filename6 = '/data.test.my.sql';
+            self::$filename7 = '/constraints.my.sql';
             break;
 
         case 'oci8_SGL':
-            $this->dbType = 'oci8'; // exception to dbType naming
-            $this->filename1 = '/schema.oci.sql';
-            $this->filename2 = '/data.default.oci.sql';
-            $this->filename3 = '/data.sample.oci.sql';
-            $this->filename4 = '/data.block.add.oci.sql';
-            $this->filename5 = '/data.custom.oci.sql';
-            $this->filename6 = '/data.test.oci.sql';
-            $this->filename7 = '/constraints.oci.sql';
+            self::$dbType = 'oci8'; // exception to dbType naming
+            self::$filename1 = '/schema.oci.sql';
+            self::$filename2 = '/data.default.oci.sql';
+            self::$filename3 = '/data.sample.oci.sql';
+            self::$filename4 = '/data.block.add.oci.sql';
+            self::$filename5 = '/data.custom.oci.sql';
+            self::$filename6 = '/data.test.oci.sql';
+            self::$filename7 = '/constraints.oci.sql';
             break;
         }
 
         //  these hold what to display in results grid, depending on outcome
-        $this->success = '<img src=\\"' . SGL_BASE_URL . '/themes/default/images/enabled.gif\\" border=\\"0\\" width=\\"22\\" height=\\"22\\">' ;
-        $this->failure = '<span class=\\"error\\">ERROR</span>';
-        $this->noFile  = '<strong>N/A</strong>';
+        self::$success = '<img src=\\"' . SGL_BASE_URL . '/themes/default/images/enabled.gif\\" border=\\"0\\" width=\\"22\\" height=\\"22\\">' ;
+        self::$failure = '<span class=\\"error\\">ERROR</span>';
+        self::$noFile  = '<strong>N/A</strong>';
     }
 }
 
@@ -287,7 +287,7 @@ class SGL_UpdateHtmlTask extends SGL_Task
  */
 class SGL_Task_DefineTableAliases extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $c = SGL_Config::singleton();
 
@@ -319,16 +319,16 @@ class SGL_Task_DefineTableAliases extends SGL_Task
  */
 class SGL_Task_DisableForeignKeyChecks extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $c = SGL_Config::singleton();
-        $this->conf = $c->getAll();
+        $conf = $c->getAll();
 
         //  disable fk constraints if mysql (>= 4.1.x)
-        if        ($this->conf['db']['type'] == 'mysql_SGL'
-                || $this->conf['db']['type'] == 'mysql'
-                || $this->conf['db']['type'] == 'mysqli'
-                || $this->conf['db']['type'] == 'mysqli_SGL') {
+        if        ($conf['db']['type'] == 'mysql_SGL'
+                || $conf['db']['type'] == 'mysql'
+                || $conf['db']['type'] == 'mysqli'
+                || $conf['db']['type'] == 'mysqli_SGL') {
 
             $dbh =  SGL_DB::singleton();
             if (PEAR::isError($dbh)) {
@@ -350,20 +350,20 @@ class SGL_Task_DisableForeignKeyChecks extends SGL_Task
  */
 class SGL_Task_CreateDatabase extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $c = SGL_Config::singleton();
-        $this->conf = $c->getAll();
+        $conf = $c->getAll();
 
-        if ($this->conf['db']['type'] == 'pgsql') {
+        if ($conf['db']['type'] == 'pgsql') {
             $excludeDbName = false;
         } else {
             $excludeDbName = true;
         }
         $dsn = SGL_DB::getDsn(SGL_DSN_STRING, $excludeDbName);
         $dbh =  SGL_DB::singleton($dsn);
-        $query = SGL_Sql::buildDbCreateStatement($this->conf['db']['type'],
-            $dbh->quoteIdentifier($this->conf['db']['name']));
+        $query = SGL_Sql::buildDbCreateStatement($conf['db']['type'],
+            $dbh->quoteIdentifier($conf['db']['name']));
         $res = $dbh->query($query);
         if (PEAR::isError($res)) {
             SGL_Install_Common::errorPush($res);
@@ -376,15 +376,15 @@ class SGL_Task_CreateDatabase extends SGL_Task
  */
 class SGL_Task_DropDatabase extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $c = SGL_Config::singleton();
-        $this->conf = $c->getAll();
+        $conf = $c->getAll();
 
         $dbh =  SGL_DB::singleton();
         require_once SGL_CORE_DIR . '/Sql.php';
-        $query = SGL_Sql::buildDbDropStatement($this->conf['db']['type'],
-            $dbh->quoteIdentifier($this->conf['db']['name']));
+        $query = SGL_Sql::buildDbDropStatement($conf['db']['type'],
+            $dbh->quoteIdentifier($conf['db']['name']));
         $res = $dbh->query($query);
         if (PEAR::isError($res)) {
             SGL_Install_Common::errorPush($res);
@@ -397,7 +397,7 @@ class SGL_Task_DropDatabase extends SGL_Task
  */
 class SGL_Task_PrepareInstallationProgressTable extends SGL_UpdateHtmlTask
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         SGL_Install_Common::printHeader('Building Database');
 
@@ -412,10 +412,10 @@ class SGL_Task_PrepareInstallationProgressTable extends SGL_UpdateHtmlTask
 
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
 
-            $this->setup();
+            self::setup();
 
             $statusText = 'Fetching modules';
-            $this->updateHtml('status', $statusText);
+            self::updateHtml('status', $statusText);
 
             //  Print table shell, with module names; we'll update statuses as we execute sql below
             $out = '<table class="wide">
@@ -476,14 +476,14 @@ class SGL_Task_PrepareInstallationProgressTable extends SGL_UpdateHtmlTask
  */
 class SGL_Task_DropTables extends SGL_UpdateHtmlTask
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1
                 && (!array_key_exists('useExistingData', $data) || $data['useExistingData'] == 0)) {
-            $this->setup();
+            self::setup();
 
             $statusText = 'dropping existing tables';
-            $this->updateHtml('status', $statusText);
+            self::updateHtml('status', $statusText);
 
             $c   = SGL_Config::singleton();
             $dbh =  SGL_DB::singleton();
@@ -495,7 +495,7 @@ class SGL_Task_DropTables extends SGL_UpdateHtmlTask
             }
 
             //  drop 'sequence' table unless we're installing a module
-            if ($this->conf['db']['type'] == 'mysql_SGL' && !array_key_exists('moduleInstall', $data)) {
+            if (self::$conf['db']['type'] == 'mysql_SGL' && !array_key_exists('moduleInstall', $data)) {
                 $aSeqTableName = SGL_Sql::extractTableNamesFromSchema(SGL_ETC_DIR . '/sequence.my.sql');
                 foreach ($aSeqTableName as $seqTableName) {
                     $query = 'DROP TABLE '. $dbh->quoteIdentifier($seqTableName);
@@ -510,8 +510,8 @@ class SGL_Task_DropTables extends SGL_UpdateHtmlTask
                 $modulePath = SGL_MOD_DIR . '/' . $module  . '/data';
 
                 //  Load the module's schema
-                if (file_exists($modulePath . $this->filename1)) {
-                    $aTableNames = SGL_Sql::extractTableNamesFromSchema($modulePath . $this->filename1);
+                if (file_exists($modulePath . self::$filename1)) {
+                    $aTableNames = SGL_Sql::extractTableNamesFromSchema($modulePath . self::$filename1);
                     $tableExists = true;
                     $dropSucceeded = true;
                     foreach ($aTableNames as $tableName) {
@@ -527,11 +527,11 @@ class SGL_Task_DropTables extends SGL_UpdateHtmlTask
                         }
                     }
                     if (!$dropSucceeded) {
-                        $displayHtml = $this->failure;
+                        $displayHtml = self::$failure;
                     } elseif (!$tableExists) {
-                        $displayHtml = $this->noFile;
+                        $displayHtml = self::$noFile;
                     } else {
-                        $displayHtml = $this->success;
+                        $displayHtml = self::$success;
                     }
 
                     //  remove tablename in Config
@@ -547,9 +547,9 @@ class SGL_Task_DropTables extends SGL_UpdateHtmlTask
                             SGL_Install_Common::errorPush($ok);
                         }
                     }
-                    $this->updateHtml($module . '_drop', $displayHtml);
+                    self::updateHtml($module . '_drop', $displayHtml);
                 } else {
-                    $this->updateHtml($module . '_drop', $this->noFile);
+                    self::updateHtml($module . '_drop', self::$noFile);
                 }
             }
             // remove translation tables and lang table
@@ -557,7 +557,7 @@ class SGL_Task_DropTables extends SGL_UpdateHtmlTask
                 $conf = $c->getAll();
                 if ($conf['translation']['container'] == 'db') {
                     $statusText = 'dropping translation tables';
-                    $this->updateHtml('status', $statusText);
+                    self::updateHtml('status', $statusText);
                     $trans = SGL_Translation::singleton('admin');
                     $aLangs = $trans->getLangs('ids');
                     if (!PEAR::isError($aLangs)) {
@@ -609,16 +609,16 @@ class SGL_Task_DropTables extends SGL_UpdateHtmlTask
  */
 class SGL_Task_CreateTables extends SGL_UpdateHtmlTask
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
-            $this->setup();
+            self::setup();
 
             $statusText = 'creating and loading tables';
-            $this->updateHtml('status', $statusText);
+            self::updateHtml('status', $statusText);
 
             //  load 'sequence' table
-            if ($this->conf['db']['type'] == 'mysql_SGL' || $this->conf['db']['type'] == 'mysqli_SGL') {
+            if (self::$conf['db']['type'] == 'mysql_SGL' || self::$conf['db']['type'] == 'mysqli_SGL') {
 
                 $result = SGL_Sql::parse(SGL_ETC_DIR . '/sequence.my.sql', 0, array('SGL_Sql', 'execute'));
             }
@@ -627,16 +627,16 @@ class SGL_Task_CreateTables extends SGL_UpdateHtmlTask
                 $modulePath = SGL_MOD_DIR . '/'. $module  . '/data';
 
                 //  Load the module's schema
-                if (file_exists($modulePath . $this->filename1)) {
+                if (file_exists($modulePath . self::$filename1)) {
                     SGL::logMessage("creating schemas for '$module' module", PEAR_LOG_DEBUG);
-                    $result = SGL_Sql::parse($modulePath . $this->filename1, 0, array('SGL_Sql', 'execute'));
+                    $result = SGL_Sql::parse($modulePath . self::$filename1, 0, array('SGL_Sql', 'execute'));
                     if (PEAR::isError($result)) {
                         return $result;
                     }
-                    $displayHtml = $result ? $this->success : $this->failure;
-                    $this->updateHtml($module . '_schema', $displayHtml);
+                    $displayHtml = $result ? self::$success : self::$failure;
+                    self::updateHtml($module . '_schema', $displayHtml);
                 } else {
-                    $this->updateHtml($module . '_schema', $this->noFile);
+                    self::updateHtml($module . '_schema', self::$noFile);
                 }
             }
 
@@ -645,10 +645,10 @@ class SGL_Task_CreateTables extends SGL_UpdateHtmlTask
                 if (SGL::runningFromCli() || defined('SGL_ADMIN_REBUILD')) {
                     die('Tables already exist, DB error');
                 } else {
-                    $this->updateHtml('status', 'Tables already exist');
+                    self::updateHtml('status', 'Tables already exist');
                     $body = 'It appears that the schema already exists.  Click <a href=\\"index.php\\">here</a> to return to the configuration screen and choose \\"Only set DB connection details\\".';
-                    $this->updateHtml('additionalInfo', $body);
-                    $this->updateHtml('progress_bar', '');
+                    self::updateHtml('additionalInfo', $body);
+                    self::updateHtml('progress_bar', '');
                     exit;
                 }
             }
@@ -661,29 +661,29 @@ class SGL_Task_CreateTables extends SGL_UpdateHtmlTask
  */
 class SGL_Task_LoadDefaultData extends SGL_UpdateHtmlTask
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $result = false;
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
-            $this->setup();
+            self::setup();
 
             $statusText = 'loading default data';
-            $this->updateHtml('status', $statusText);
+            self::updateHtml('status', $statusText);
 
             //  Go back and load each module's default data, if there is a sql file in /data
             foreach ($data['aModuleList'] as $module) {
                 $modulePath = SGL_MOD_DIR . '/' . $module  . '/data';
                 //  Load the module's data
-                if (file_exists($modulePath . $this->filename2)) {
+                if (file_exists($modulePath . self::$filename2)) {
                     SGL::logMessage("loading default data for '$module'", PEAR_LOG_DEBUG);
-                    $result = SGL_Sql::parse($modulePath . $this->filename2, 0, array('SGL_Sql', 'execute'));
+                    $result = SGL_Sql::parse($modulePath . self::$filename2, 0, array('SGL_Sql', 'execute'));
                     if (PEAR::isError($result)) {
                         return $result;
                     }
-                    $displayHtml = $result ? $this->success : $this->failure;
-                    $this->updateHtml($module . '_data', $displayHtml);
+                    $displayHtml = $result ? self::$success : self::$failure;
+                    self::updateHtml($module . '_data', $displayHtml);
                 } else {
-                    $this->updateHtml($module . '_data', $this->noFile);
+                    self::updateHtml($module . '_data', self::$noFile);
                 }
             }
         }
@@ -696,27 +696,27 @@ class SGL_Task_LoadDefaultData extends SGL_UpdateHtmlTask
  */
 class SGL_Task_LoadSampleData extends SGL_UpdateHtmlTask
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $result = false;
         if (array_key_exists('insertSampleData', $data) && $data['insertSampleData'] == 1) {
-            $this->setup();
+            self::setup();
 
             $statusText = 'loading sample data';
-            $this->updateHtml('status', $statusText);
+            self::updateHtml('status', $statusText);
 
             //  Go back and load each module's default data, if there is a sql file in /data
             foreach ($data['aModuleList'] as $module) {
                 $modulePath = SGL_MOD_DIR . '/' . $module  . '/data';
 
                 //  Load the module's data
-                if (file_exists($modulePath . $this->filename3)) {
+                if (file_exists($modulePath . self::$filename3)) {
                     SGL::logMessage("loading sample data for '$module'", PEAR_LOG_DEBUG);
-                    $result = SGL_Sql::parse($modulePath . $this->filename3, 0, array('SGL_Sql', 'execute'));
-                    $displayHtml = $result ? $this->success : $this->failure;
-                    $this->updateHtml($module . '_dataSample', $displayHtml);
+                    $result = SGL_Sql::parse($modulePath . self::$filename3, 0, array('SGL_Sql', 'execute'));
+                    $displayHtml = $result ? self::$success : self::$failure;
+                    self::updateHtml($module . '_dataSample', $displayHtml);
                 } else {
-                    $this->updateHtml($module . '_dataSample', $this->noFile);
+                    self::updateHtml($module . '_dataSample', self::$noFile);
                 }
             }
         }
@@ -729,19 +729,19 @@ class SGL_Task_LoadSampleData extends SGL_UpdateHtmlTask
  */
 class SGL_Task_LoadCustomData extends SGL_UpdateHtmlTask
 {
-    function run($data = array())
+    public static function run($data = array())
     {
-        $this->setup();
+        self::setup();
         $statusText = 'loading custom data';
-        $this->updateHtml('status', $statusText);
+        self::updateHtml('status', $statusText);
         $result = false;
 
         //  Go back and load each module's custom data, if there is a custom sql file in /data
         foreach ($data['aModuleList'] as $module) {
             $modulePath = SGL_MOD_DIR . '/' . $module  . '/data';
             //  Load the module's custom data if exists
-            if (file_exists($modulePath . $this->filename5)) {
-                $result = SGL_Sql::parse($modulePath . $this->filename5, 0, array('SGL_Sql', 'execute'));
+            if (file_exists($modulePath . self::$filename5)) {
+                $result = SGL_Sql::parse($modulePath . self::$filename5, 0, array('SGL_Sql', 'execute'));
             }
         }
         return $result;
@@ -753,7 +753,7 @@ class SGL_Task_LoadCustomData extends SGL_UpdateHtmlTask
  */
 class SGL_Task_RemoveDefaultData extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         require_once SGL_MOD_DIR . '/default/classes/DefaultDAO.php';
         $da =  DefaultDAO::singleton();
@@ -776,23 +776,23 @@ class SGL_Task_RemoveDefaultData extends SGL_Task
  */
 class SGL_Task_LoadBlockData extends SGL_UpdateHtmlTask
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $result = false;
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1
             && (!array_key_exists('useExistingData', $data) || $data['useExistingData'] == 0)) {
-            $this->setup();
+            self::setup();
 
             $statusText = 'loading block data';
-            $this->updateHtml('status', $statusText);
+            self::updateHtml('status', $statusText);
 
             //  Go back and load each module's default data, if there is a sql file in /data
             foreach ($data['aModuleList'] as $module) {
                 $modulePath = SGL_MOD_DIR . '/' . $module  . '/data';
 
                 //  Load the module's data
-                if (file_exists($modulePath . $this->filename4)) {
-                    $result = SGL_Sql::parse($modulePath . $this->filename4, 0, array('SGL_Sql', 'execute'));
+                if (file_exists($modulePath . self::$filename4)) {
+                    $result = SGL_Sql::parse($modulePath . self::$filename4, 0, array('SGL_Sql', 'execute'));
                 }
             }
         }
@@ -805,10 +805,10 @@ class SGL_Task_LoadBlockData extends SGL_UpdateHtmlTask
  */
 class SGL_Task_RemoveBlockData extends SGL_UpdateHtmlTask
 {
-    function run($data = array())
+    public static function run($data = array())
     {
 
-        $this->setup();
+        self::setup();
 
         //  Go back and load each module's default data, if there is a sql file in /data
         foreach ($data['aModuleList'] as $module) {
@@ -816,7 +816,7 @@ class SGL_Task_RemoveBlockData extends SGL_UpdateHtmlTask
 
             //  remove the module's block data
             //  switch 'add' to 'remove'
-            $filename = str_replace('add', 'remove', $this->filename4);
+            $filename = str_replace('add', 'remove', self::$filename4);
             if (is_file($modulePath . $filename)) {
                 $result = SGL_Sql::parse($modulePath . $filename, 0, array('SGL_Sql', 'execute'));
             }
@@ -830,23 +830,23 @@ class SGL_Task_RemoveBlockData extends SGL_UpdateHtmlTask
  */
 class SGL_Task_CreateConstraints extends SGL_UpdateHtmlTask
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
-            $this->setup();
+            self::setup();
 
             $statusText = 'loading constraints';
-            $this->updateHtml('status', $statusText);
+            self::updateHtml('status', $statusText);
 
             //  Go back and load module foreign keys/constraints, if any
             foreach ($data['aModuleList'] as $module) {
                 $modulePath = SGL_MOD_DIR . '/' . $module  . '/data';
-                if (file_exists($modulePath . $this->filename7)) {
-                    $result = SGL_Sql::parse($modulePath . $this->filename7, 0, array('SGL_Sql', 'execute'));
-                    $displayHtml = $result ? $this->success : $this->failure;
-                    $this->updateHtml($module . '_constraints', $displayHtml);
+                if (file_exists($modulePath . self::$filename7)) {
+                    $result = SGL_Sql::parse($modulePath . self::$filename7, 0, array('SGL_Sql', 'execute'));
+                    $displayHtml = $result ? self::$success : self::$failure;
+                    self::updateHtml($module . '_constraints', $displayHtml);
                 } else {
-                    $this->updateHtml($module . '_constraints', $this->noFile);
+                    self::updateHtml($module . '_constraints', self::$noFile);
                 }
             }
         }
@@ -865,7 +865,7 @@ class SGL_Task_BuildNavigation extends SGL_UpdateHtmlTask
     var $groupId = null;
     var $childId = null;
 
-    function run($data = array())
+    public static function run($data = array())
     {
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1
                 && (!array_key_exists('useExistingData', $data) || $data['useExistingData'] == 0)
@@ -882,15 +882,15 @@ class SGL_Task_BuildNavigation extends SGL_UpdateHtmlTask
 
                             //  check if section is designated as child to last insert
                             if ($aSection['parent_id'] == SGL_NODE_GROUP) {
-                                $aSection['parent_id'] = $this->groupId;
+                                $aSection['parent_id'] = self::$groupId;
                             }
                             $id = $da->addSimpleSection($aSection);
                             if (!PEAR::isError($id)) {
                                 if ($aSection['parent_id'] == SGL_NODE_ADMIN
                                         || $aSection['parent_id'] == SGL_NODE_USER) {
-                                    $this->groupId = $id;
+                                    self::$groupId = $id;
                                 } else {
-                                    $this->childId = $id;
+                                    self::$childId = $id;
                                 }
                             } else {
                                 SGL_Install_Common::errorPush($id);
@@ -916,7 +916,7 @@ class SGL_Task_BuildNavigation extends SGL_UpdateHtmlTask
  */
 class SGL_Task_RemoveNavigation extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         require_once SGL_MOD_DIR . '/navigation/classes/NavigationDAO.php';
         $da =  NavigationDAO::singleton();
@@ -941,7 +941,7 @@ class SGL_Task_RemoveNavigation extends SGL_Task
  */
 class SGL_Task_DeregisterModule extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $ok = false;
         foreach ($data['aModuleList'] as $module) {
@@ -959,7 +959,7 @@ class SGL_Task_DeregisterModule extends SGL_Task
  */
 class SGL_Task_EnableDebugBlock extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         require_once SGL_MOD_DIR . '/block/classes/BlockDAO.php';
         $da =  BlockDAO::singleton();
@@ -982,7 +982,7 @@ class SGL_Task_EnableDebugBlock extends SGL_Task
  */
 class SGL_Task_LoadTranslations extends SGL_UpdateHtmlTask
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $c = SGL_Config::singleton();
         $aLangOptions = SGL_Util::getLangsDescriptionMap();
@@ -990,16 +990,16 @@ class SGL_Task_LoadTranslations extends SGL_UpdateHtmlTask
         if (array_key_exists('storeTranslationsInDB', $data) && $data['storeTranslationsInDB'] == 1) {
             $trans =  SGL_Translation::singleton('admin');
 
-            $this->setup();
+            self::setup();
 
             $statusText = 'loading languages';
-            $this->updateHtml('status', $statusText);
+            self::updateHtml('status', $statusText);
 
             //  fetch available languages
             $availableLanguages =  $GLOBALS['_SGL']['LANGUAGE'];
 
             //  add languages to config
-            $this->installedLanguages = $data['installLangs'];
+            self::$installedLanguages = $data['installLangs'];
             $langString = (is_array($data['installLangs']))
                 ? implode(',', str_replace('-', '_', $data['installLangs']))
                 : '';
@@ -1012,8 +1012,8 @@ class SGL_Task_LoadTranslations extends SGL_UpdateHtmlTask
 
                 // skip language creation during module install
                 if (empty($data['skipLangTablesCreation'])) {
-                    $prefix = $this->conf['db']['prefix'] .
-                        $this->conf['translation']['tablePrefix'] . '_';
+                    $prefix = self::$conf['db']['prefix'] .
+                        self::$conf['translation']['tablePrefix'] . '_';
                     $encoding = substr($aLang, strpos('-', $aLang));
                     $langData = array(
                         'lang_id' => $langID,
@@ -1036,7 +1036,7 @@ class SGL_Task_LoadTranslations extends SGL_UpdateHtmlTask
                 //  iterate through modules
                 foreach ($data['aModuleList'] as $module) {
                     $statusText = 'loading languages - '. $module .' ('. str_replace('_','-', $langID) .')';
-                    $this->updateHtml('status', $statusText);
+                    self::updateHtml('status', $statusText);
 
                     $modulePath = SGL_MOD_DIR . '/' . $module  . '/lang';
 
@@ -1091,17 +1091,17 @@ class SGL_Task_LoadTranslations extends SGL_UpdateHtmlTask
  */
 class SGL_Task_EnableForeignKeyChecks extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $c = SGL_Config::singleton();
-        $this->conf = $c->getAll();
+        $conf = $c->getAll();
         $res = true;
 
         //  re-enable fk constraints if mysql (>= 4.1.x)
-        if        ($this->conf['db']['type'] == 'mysql_SGL'
-                || $this->conf['db']['type'] == 'mysql'
-                || $this->conf['db']['type'] == 'mysqli'
-                || $this->conf['db']['type'] == 'mysqli_SGL') {
+        if        ($conf['db']['type'] == 'mysql_SGL'
+                || $conf['db']['type'] == 'mysql'
+                || $conf['db']['type'] == 'mysqli'
+                || $conf['db']['type'] == 'mysqli_SGL') {
 
 
             $dbh =  SGL_DB::singleton();
@@ -1117,13 +1117,13 @@ class SGL_Task_EnableForeignKeyChecks extends SGL_Task
  */
 class SGL_Task_VerifyDbSetup extends SGL_UpdateHtmlTask
 {
-    function run($data = array())
+    public static function run($data = array())
     {
-        $this->setup();
+        self::setup();
 
         //  verify db
         $dbh =  SGL_DB::singleton();
-        $query = "SELECT COUNT(*) FROM {$this->conf['table']['permission']}";
+        $query = "SELECT COUNT(*) FROM ".self::$conf['table']['permission'];
         $res = $dbh->getAll($query);
         if (PEAR::isError($res, DB_ERROR_NOSUCHTABLE)) {
             SGL_Install_Common::errorPush(
@@ -1136,28 +1136,28 @@ class SGL_Task_VerifyDbSetup extends SGL_UpdateHtmlTask
         //  create error message if appropriate
         if (SGL_Install_Common::errorsExist()) {
             $statusText = 'Some problems were encountered';
-            $this->updateHtml('status', $statusText);
+            self::updateHtml('status', $statusText);
             $body = 'please diagnose and try again';
         } else {
             if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
 
                 //  note: must all be on one line for DOM text replacement
                 $message = 'Database initialisation complete!';
-                $this->updateHtml('status', $message);
+                self::updateHtml('status', $message);
                 $body = '<p><a href=\\"' . SGL_BASE_URL . '/setup.php?start\\">LAUNCH SEAGULL</a> </p>NOTE: <strong>N/A</strong> indicates that a schema or data is not needed for this module';
 
             //  else only a DB connect was requested
             } else {
                 $statusText = 'DB setup succeeded';
                 $statusText .= ', schema creation skipped';
-                $this->updateHtml('status', $statusText);
+                self::updateHtml('status', $statusText);
                 $body = '<p><a href=\\"' . SGL_BASE_URL . '/setup.php?start\\">LAUNCH SEAGULL</a> </p>';
             }
         }
 
         //  done, create "launch seagull" link
-        $this->updateHtml('additionalInfo', $body);
-        $this->updateHtml('progress_bar', '');
+        self::updateHtml('additionalInfo', $body);
+        self::updateHtml('progress_bar', '');
 
         SGL_Install_Common::printFooter();
     }
@@ -1168,7 +1168,7 @@ class SGL_Task_VerifyDbSetup extends SGL_UpdateHtmlTask
  */
 class SGL_Task_CreateFileSystem extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $err = false;
 
@@ -1219,7 +1219,7 @@ EOF;
  */
 class SGL_Task_CreateDataObjectEntities extends SGL_Task
 {
-    function run($data = null)
+    public static function run($data = null)
     {
         $err = false;
         $c = SGL_Config::singleton();
@@ -1268,7 +1268,7 @@ class SGL_Task_CreateDataObjectEntities extends SGL_Task
  */
 class SGL_Task_CreateDataObjectLinkFile extends SGL_Task
 {
-    function run($data = null)
+    public static function run($data = null)
     {
         $err = false;
         $c = SGL_Config::singleton();
@@ -1342,7 +1342,7 @@ class SGL_Task_CreateDataObjectLinkFile extends SGL_Task
  */
 class SGL_Task_SymLinkWwwData extends SGL_Task
 {
-    function run($data = null)
+    public static function run($data = null)
     {
         $ret = true;
         foreach ($data['aModuleList'] as $module) {
@@ -1388,7 +1388,7 @@ class SGL_Task_SymLinkWwwData extends SGL_Task
  */
 class SGL_Task_UnLinkWwwData extends SGL_Task
 {
-    function run($data = null)
+    public static function run($data = null)
     {
         $ret = true;
         foreach ($data['aModuleList'] as $module) {
@@ -1439,9 +1439,9 @@ class SGL_Task_AddTestDataToConfig extends SGL_UpdateHtmlTask
      * @param unknown_type $data
      * @return array|void
      */
-    function run($data = null)
+    public static function run($data = null)
     {
-        $this->setup();
+        self::setup();
 
         //  get relevant module directory
         $globalConf = SGL_Config::singleton();
@@ -1454,13 +1454,13 @@ class SGL_Task_AddTestDataToConfig extends SGL_UpdateHtmlTask
             $dataDir = SGL_MOD_DIR . '/' . $module  . '/data';
             //  get available data files
             $aFiles = array();
-            if (is_file($dataDir . $this->filename1)) {
+            if (is_file($dataDir . self::$filename1)) {
                 $aFiles['schema'] = 1;
             }
-            if (is_file($dataDir . $this->filename2)) {
+            if (is_file($dataDir . self::$filename2)) {
                 $aFiles['dataDefault'] = 1;
             }
-            if (is_file($dataDir . $this->filename6)) {
+            if (is_file($dataDir . self::$filename6)) {
                 $aFiles['dataTest'] = 1;
             }
             //  load current test config
@@ -1469,17 +1469,17 @@ class SGL_Task_AddTestDataToConfig extends SGL_UpdateHtmlTask
                 //  and add schema/data files
                 $update = false;
                 if (isset($aFiles['schema'])) {
-                    $nextId = $this->getNextKey($aTestData['schemaFiles']);
+                    $nextId = self::getNextKey($aTestData['schemaFiles']);
                     $aTestData['schemaFiles']['file'.$nextId] =  $moduleDir . '/' . $module  . '/data/schema.my.sql';
                     $update = true;
                 }
                 if (isset($aFiles['dataDefault'])) {
-                    $nextId = $this->getNextKey($aTestData['dataFiles']);
+                    $nextId = self::getNextKey($aTestData['dataFiles']);
                     $aTestData['dataFiles']['file'.$nextId] =  $moduleDir . '/' . $module  . '/data/data.default.my.sql';
                     $update = true;
                 }
                 if (isset($aFiles['dataTest'])) {
-                    $nextId = $this->getNextKey($aTestData['dataFiles']);
+                    $nextId = self::getNextKey($aTestData['dataFiles']);
                     $aTestData['dataFiles']['file'.$nextId] =  $moduleDir . '/' . $module  . '/data/data.test.my.sql';
                     $update = true;
                 }
@@ -1492,7 +1492,7 @@ class SGL_Task_AddTestDataToConfig extends SGL_UpdateHtmlTask
         }
     }
 
-    function getNextKey($aKeys)
+    public static function getNextKey($aKeys)
     {
         $keys = array_keys($aKeys);
         $out = array();
@@ -1509,10 +1509,10 @@ class SGL_Task_AddTestDataToConfig extends SGL_UpdateHtmlTask
  */
 class SGL_Task_RemoveTestDataFromConfig extends SGL_UpdateHtmlTask
 {
-    function run($data = null)
+    public static function run($data = null)
     {
         if (is_file(SGL_VAR_DIR . '/test.conf.ini.php')) {
-            $this->setup();
+            self::setup();
             $c = new SGL_Config();
             foreach ($data['aModuleList'] as $module) {
                 //  load current test config
@@ -1557,7 +1557,7 @@ class SGL_Task_SyncSequences extends SGL_Task
      * @return  true | PEAR Error
      * @todo we need to reinstate this method's ability to receive an array of tables as an argument
      */
-    function run($data = null)
+    public static function run($data = null)
     {
         $locator = SGL_ServiceLocator::singleton();
         $dbh = $locator->get('DB');
@@ -1807,7 +1807,7 @@ class SGL_Task_SyncSequences extends SGL_Task
  */
 class SGL_Task_CreateAdminUser extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $ok = true;
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
@@ -1842,7 +1842,7 @@ class SGL_Task_CreateAdminUser extends SGL_Task
  */
 class SGL_Task_CreateMemberUser extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         if (array_key_exists('createTables', $data) && $data['createTables'] == 1) {
             require_once SGL_MOD_DIR . '/user/classes/UserDAO.php';
@@ -1874,7 +1874,7 @@ class SGL_Task_CreateMemberUser extends SGL_Task
  */
 class SGL_Task_InstallerCleanup extends SGL_Task
 {
-    function run($data = array())
+    public static function run($data = array())
     {
         $newFile = <<<PHP
 <?php

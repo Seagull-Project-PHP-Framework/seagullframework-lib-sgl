@@ -5,7 +5,7 @@
  */
 class SGL_Task_ModifyIniSettings extends SGL_Task
 {
-    function run($conf = array())
+    public static function run($conf = array())
     {
         // set php.ini directives
         @ini_set('session.auto_start',          0); //  sessions will fail fail if enabled

@@ -70,11 +70,8 @@ if (!isset($GLOBALS['varDir'])) {
  */
 class SGL_Task_Init extends SGL_DecorateProcess
 {
-    function process($input, $output)
+    function process(SGL_Registry $input, SGL_Output $output)
     {
-        if (SGL_PROFILING_ENABLED && function_exists('apd_set_pprof_trace')) {
-            apd_set_pprof_trace();
-        }
         //  start output buffering
         if (SGL_Config::get('site.outputBuffering')) {
             ob_start();
