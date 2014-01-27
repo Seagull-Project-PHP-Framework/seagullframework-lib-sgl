@@ -37,13 +37,13 @@ class SGL_Task_EnvSummary extends SGL_Task
     /**
      * @return string
      */
-    function render()
+    public static function render()
     {
         $html = '<table width="70%" border=1>'.EOL;
-        $html .= '<th colspan="3">'.$this->title.'</th>'.EOL;
+        $html .= '<th colspan="3">'.self::$title.'</th>'.EOL;
 
         // check if in "php.ini Settings" portion of environment detection
-        if (array_key_exists('register_globals', $this->aData)) {
+        if (array_key_exists('register_globals', self::$aData)) {
             $cfg_file_path = (get_cfg_var("cfg_file_path"))
                 ? get_cfg_var("cfg_file_path")
                 : "<strong>php.ini not available</strong>";
@@ -59,7 +59,7 @@ class SGL_Task_EnvSummary extends SGL_Task
                     'to work incorrectly.</td></tr>';
             }
         }
-        if (!$this->mandatory) {
+        if (!self::$mandatory) {
             $html .= '<tr><td>&nbsp;</td><td><em>Recommended</em></td><td><em>Actual</em></td></tr>'.EOL;
         }
         foreach (self::$aData as $k => $v) {
@@ -68,11 +68,11 @@ class SGL_Task_EnvSummary extends SGL_Task
             $html .= '<td><strong>'.SGL_Inflector::getTitleFromCamelCase($k).'</strong></td>';
             if (is_array($v)) {
                 $html .= '<td colspan="2">'.self::createComboBox($v).'</td>';
-            } elseif ($this->mandatory) {
+            } elseif (self::$mandatory) {
                 $html .= '<td colspan="2">'.self::processDependency(self::$aRequirements[$k], @self::$aErrors[$k], $k, $v).$discoveredValue.'</span></td>';
             } else {
-                $html .= '<td>'.$this->processRecommended(self::$aRequirements[$k]).'</td>';
-                $html .= '<td>'.$this->processDependency(self::$aRequirements[$k], @self::$aErrors[$k], $k, $v).$discoveredValue.'</span></td>';
+                $html .= '<td>'.self::processRecommended(self::$aRequirements[$k]).'</td>';
+                $html .= '<td>'.self::processDependency(self::$aRequirements[$k], @self::$aErrors[$k], $k, $v).$discoveredValue.'</span></td>';
             }
             $html .= '</tr>';
         }
@@ -87,7 +87,7 @@ class SGL_Task_EnvSummary extends SGL_Task
      * @param $actual
      * @return string
      */
-    function processDependency($aRequirement, $error, $key, $actual)
+    public static function processDependency($aRequirement, $error, $key, $actual)
     {
         $depType = key($aRequirement);
         $depValue = $aRequirement[$depType];// what value the dep requires
@@ -137,7 +137,7 @@ class SGL_Task_EnvSummary extends SGL_Task
      * @param $aRequirement
      * @return string
      */
-    function processRecommended($aRequirement)
+    public static function processRecommended($aRequirement)
     {
         $depType = key($aRequirement);
         $depValue = $aRequirement[$depType];
@@ -153,7 +153,7 @@ class SGL_Task_EnvSummary extends SGL_Task
      * @param $aData
      * @return string
      */
-    function createComboBox($aData)
+    public static function createComboBox($aData)
     {
         $html = '<select name="pearPackages" multiple="multiple">';
         foreach ($aData as $option) {
