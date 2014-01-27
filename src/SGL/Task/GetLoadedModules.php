@@ -5,9 +5,9 @@
  */
 class SGL_Task_GetLoadedModules extends SGL_Task_EnvSummary
 {
-    var $title = 'Available Modules';
-    var $key = 'loaded_modules';
-    var $aRequirements = array(
+    public static $title = 'Available Modules';
+    public static $key = 'loaded_modules';
+    public static $aRequirements = array(
         'curl' => array(SGL_RECOMMENDED => 1),
         'gd' => array(SGL_RECOMMENDED => 1),
         'iconv' => array(SGL_RECOMMENDED => 1),
@@ -23,19 +23,19 @@ class SGL_Task_GetLoadedModules extends SGL_Task_EnvSummary
         'tidy' => array(SGL_RECOMMENDED => 1),
         'zlib' => array(SGL_RECOMMENDED => 1),
     );
-    var $aErrors = array(
+    public static $aErrors = array(
         'session' => 'You need the session extension to run Seagull',
         'pcre' => 'You need the pcre extension to run Seagull',
         'apc' => 'Problems have been reported running apc, please disable to continue',
     );
 
-    function run()
+    public static function run()
     {
-        $this->aRequirements['dom'] = array(SGL_RECOMMENDED => 1);
+        self::$aRequirements['dom'] = array(SGL_RECOMMENDED => 1);
 
-        foreach ($this->aRequirements as $m => $dep) {
-            $this->aData[$m] = bool2int(extension_loaded($m));
+        foreach (self::$aRequirements as $m => $dep) {
+            self::$aData[$m] = bool2int(extension_loaded($m));
         }
-        return $this->render($this->aData);
+        return self::render(self::$aData);
     }
 }

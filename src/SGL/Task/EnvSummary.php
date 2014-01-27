@@ -28,11 +28,11 @@ function ini_get2($key)
  */
 class SGL_Task_EnvSummary extends SGL_Task
 {
-    var $aData = array();
-    var $aErrors = array();
-    var $aRequirements = array();
-    var $title = '';
-    var $mandatory = false;
+    public static $aData = array();
+    public static $aErrors = array();
+    public static $aRequirements = array();
+    public static $title = '';
+    public static $mandatory = false;
 
     /**
      * @return string
@@ -62,17 +62,17 @@ class SGL_Task_EnvSummary extends SGL_Task
         if (!$this->mandatory) {
             $html .= '<tr><td>&nbsp;</td><td><em>Recommended</em></td><td><em>Actual</em></td></tr>'.EOL;
         }
-        foreach ($this->aData as $k => $v) {
+        foreach (self::$aData as $k => $v) {
             $discoveredValue = (is_int($v)) ? bool2words($v) : $v;
             $html .= '<tr>'.EOL;
             $html .= '<td><strong>'.SGL_Inflector::getTitleFromCamelCase($k).'</strong></td>';
             if (is_array($v)) {
-                $html .= '<td colspan="2">'.$this->createComboBox($v).'</td>';
+                $html .= '<td colspan="2">'.self::createComboBox($v).'</td>';
             } elseif ($this->mandatory) {
-                $html .= '<td colspan="2">'.$this->processDependency($this->aRequirements[$k], @$this->aErrors[$k], $k, $v).$discoveredValue.'</span></td>';
+                $html .= '<td colspan="2">'.self::processDependency(self::$aRequirements[$k], @self::$aErrors[$k], $k, $v).$discoveredValue.'</span></td>';
             } else {
-                $html .= '<td>'.$this->processRecommended($this->aRequirements[$k]).'</td>';
-                $html .= '<td>'.$this->processDependency($this->aRequirements[$k], @$this->aErrors[$k], $k, $v).$discoveredValue.'</span></td>';
+                $html .= '<td>'.$this->processRecommended(self::$aRequirements[$k]).'</td>';
+                $html .= '<td>'.$this->processDependency(self::$aRequirements[$k], @self::$aErrors[$k], $k, $v).$discoveredValue.'</span></td>';
             }
             $html .= '</tr>';
         }
