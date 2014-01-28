@@ -46,6 +46,8 @@
  */
 abstract class SGL_Task
 {
+    public static $conf = array();
+    public static $dbType = '';
     /**
      * 
      */

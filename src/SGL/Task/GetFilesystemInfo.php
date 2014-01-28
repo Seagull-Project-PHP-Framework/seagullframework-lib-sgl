@@ -24,6 +24,8 @@ class SGL_Task_GetFilesystemInfo extends SGL_Task_EnvSummary
 
     public static function run()
     {
+        self::$aData = array();
+
         self::$aData['installRoot'] = SGL_PATH;
         self::$aData['varDirExists'] = bool2int(file_exists(SGL_VAR_DIR));
         self::$aData['varDirIsWritable'] = bool2int(is_writable(SGL_VAR_DIR));

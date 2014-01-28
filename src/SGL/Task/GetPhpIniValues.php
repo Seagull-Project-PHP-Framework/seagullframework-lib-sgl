@@ -26,6 +26,8 @@ class SGL_Task_GetPhpIniValues extends SGL_Task_EnvSummary
 
     public static function run()
     {
+        self::$aData = array();
+
         self::$aData['safe_mode'] = ini_get2('safe_mode');
         self::$aData['register_globals'] = ini_get2('register_globals');
         self::$aData['magic_quotes_gpc'] = ini_get2('magic_quotes_gpc');

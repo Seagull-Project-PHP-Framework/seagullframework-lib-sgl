@@ -212,6 +212,18 @@ class SGL_Task_CreateConfig extends SGL_Task
  */
 class SGL_UpdateHtmlTask extends SGL_Task
 {
+    public static $filename1 = '';
+    public static $filename2 = '';
+    public static $filename3 = '';
+    public static $filename4 = '';
+    public static $filename5 = '';
+    public static $filename6 = '';
+    public static $filename7 = '';
+
+    public static $success = '';
+    public static $failure = '';
+    public static $noFile = '';
+
     public static function updateHtml($id, $displayHtml)
     {
         if (SGL::runningFromCli() || defined('SGL_ADMIN_REBUILD')) {
@@ -254,7 +266,7 @@ class SGL_UpdateHtmlTask extends SGL_Task
         case 'mysqli':
         case 'mysql_SGL':
         case 'mysqli_SGL':
-            self::$ilename1 = '/schema.my.sql';
+            self::$filename1 = '/schema.my.sql';
             self::$filename2 = '/data.default.my.sql';
             self::$filename3 = '/data.sample.my.sql';
             self::$filename4 = '/data.block.add.my.sql';
@@ -862,8 +874,8 @@ define('SGL_NODE_GROUP', 1);
  */
 class SGL_Task_BuildNavigation extends SGL_UpdateHtmlTask
 {
-    var $groupId = null;
-    var $childId = null;
+    public static  $groupId = null;
+    public static $childId = null;
 
     public static function run($data = array())
     {

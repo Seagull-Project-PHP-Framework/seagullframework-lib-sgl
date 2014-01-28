@@ -5,7 +5,7 @@
  */
 class SGL_Task_InitialiseModules extends SGL_Task
 {
-    function run($conf = array())
+    public static function run($conf = array())
     {
         $c = SGL_Config::singleton();
         $conf = $c->getAll();

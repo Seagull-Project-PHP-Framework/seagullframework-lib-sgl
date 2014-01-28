@@ -5,7 +5,7 @@
  */
 class SGL_Task_InitialiseDbDataObject extends SGL_Task
 {
-    function run($conf = array())
+    public static function run($conf = array())
     {
         $options = &PEAR::getStaticProperty('DB_DataObject', 'options');
         $options = array(

@@ -27,6 +27,7 @@ class SGL_Task_GetPhpEnv extends SGL_Task_EnvSummary
 
     public static function run()
     {
+        self::$aData = array();
         self::$aData['phpVersion'] = phpversion();
         self::$aData['operatingSystem'] = php_uname('s') .' '. php_uname('r') .', '. php_uname('m');
         self::$aData['webserverSapi'] = php_sapi_name();

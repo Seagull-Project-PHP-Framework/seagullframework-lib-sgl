@@ -29,7 +29,7 @@ class SGL_Task_GetPearInfo extends SGL_Task_EnvSummary
         self::$aData['pearPath'] = @ini_get('include_path');
         self::$aData['pearSystemLibIsLoadable'] = bool2int(require_once 'System.php');
         self::$aData['pearRegistryLibIsLoadable'] = bool2int(require_once 'PEAR/Registry.php');
-        $registry = new PEAR_Registry(SGL_LIB_PEAR_DIR);
+        $registry = new PEAR_Registry();
         self::$aData['pearRegistryIsObject'] = bool2int(is_object($registry));
         $aPackages = $registry->_listPackages();
         sort($aPackages);

@@ -68,16 +68,14 @@ class SGL_Install_WizardDetectEnv extends HTML_QuickForm_Page
             ));
         $this->setDefaults(SGL_Install_Common::overrideDefaultInstallSettings());
 
-        $this->addElement('header',     null, 'Detect Environment: page 3 of 6');
+        $this->addElement('header', null, 'Detect Environment: page 3 of 6');
 
         $runner = new SGL_TaskRunner();
         $runner->addTask(new SGL_Task_GetLoadedModules());
         $runner->addTask(new SGL_Task_GetPhpEnv());
         $runner->addTask(new SGL_Task_GetPhpIniValues());
         $runner->addTask(new SGL_Task_GetFilesystemInfo());
-        if (!SGL::isMinimalInstall()) {
-            $runner->addTask(new SGL_Task_GetPearInfo());
-        }
+        $runner->addTask(new SGL_Task_GetPearInfo());
 
         $html = $runner->main();
 
@@ -92,7 +90,7 @@ class SGL_Install_WizardDetectEnv extends HTML_QuickForm_Page
         $this->registerRule('environmentOk','function','environmentOk');
         $this->addRule('detectEnv', 'please fix the listed errors', 'environmentOk');
 
-        $this->addElement('static',  'env', null, $html);
+        $this->addElement('static', 'env', null, $html);
 
         //  submit
         $prevnext[] = $this->createElement('submit',   $this->getButtonName('back'), '<< Back');

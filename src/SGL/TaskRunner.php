@@ -27,20 +27,17 @@ class SGL_TaskRunner
     }
 
     /**
+     * @param SGL_Task $oTask
+     *
      * Method to register a new Task object in
      * the runner collection of tasks
      *
-     * @param object $oTask of type Task
-     * @return boolean true on add success false on failure
-     * @access public
+     * @return bool
      */
-    function addTask($oTask)
+    function addTask(SGL_Task $oTask)
     {
-        if (is_a($oTask, 'SGL_Task')) {
-            $this->aTasks[] =  $oTask;
-            return true;
-        }
-        return PEAR::raiseError('an SGL_Task object was expected');
+        $this->aTasks[] =  $oTask;
+        return true;
     }
 
     /**

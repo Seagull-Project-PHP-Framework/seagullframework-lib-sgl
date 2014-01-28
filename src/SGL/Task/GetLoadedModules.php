@@ -31,6 +31,7 @@ class SGL_Task_GetLoadedModules extends SGL_Task_EnvSummary
 
     public static function run()
     {
+        self::$aData = array();
         self::$aRequirements['dom'] = array(SGL_RECOMMENDED => 1);
 
         foreach (self::$aRequirements as $m => $dep) {
